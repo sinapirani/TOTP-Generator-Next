@@ -62,6 +62,14 @@ export default function AuthenticatorDisplay() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const calculateCircumference = (radius: number) => {
+    return 2 * Math.PI * radius;
+  };
+
+  const radius = 40;
+  const circumference = calculateCircumference(radius);
+  const strokeDashoffset = circumference - (timeLeft / 30) * circumference;
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -72,19 +80,40 @@ export default function AuthenticatorDisplay() {
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : (
-          <>
-            <p className="text-4xl font-mono text-center mb-4">{authCode?.code || '------'}</p>
-            <p className="text-center mb-4">Code refreshes in: {formatTime(timeLeft)}</p>
-            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mb-4">
-              <div 
-                className="bg-blue-600 h-2.5 rounded-full transition-all duration-1000 ease-linear" 
-                style={{ width: `${(timeLeft / 30) * 100}%` }}
-              ></div>
+          <div className="flex flex-col items-center">
+            <div className="relative w-32 h-32 mb-4">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  className="text-gray-200"
+                  strokeWidth="8"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r={radius}
+                  cx="50"
+                  cy="50"
+                />
+                <circle
+                  className="text-black1 transition-all duration-1000 ease-linear"
+                  strokeWidth="8"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r={radius}
+                  cx="50"
+                  cy="50"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-2xl">{formatTime(timeLeft)}</span>
+              </div>
             </div>
-            <Button onClick={fetchCode} className="w-full">
+            <p className="text-4xl font-mono text-center mb-4">{authCode?.code || '------'}</p>
+            <Button onClick={fetchCode} className="w-full mt-4">
               Refresh Code
             </Button>
-          </>
+          </div>
         )}
       </CardContent>
     </Card>
