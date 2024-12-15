@@ -1,7 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      SECRET: string;
+      SECRET_KEY_TOTP: string;
     }
   }
 }
