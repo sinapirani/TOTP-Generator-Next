@@ -2,7 +2,7 @@ import { totp } from 'otplib';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const secret = process.env.SECRETSECRET_KEY_TOTP;
+  const secret = process.env.SECRET_KEY_TOTP;
 
   if (!secret) {
     return NextResponse.json({ error: 'Secret not configured' }, { status: 500 });
