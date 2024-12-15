@@ -2,7 +2,7 @@ import { totp } from 'otplib';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const secret = process.env.INSTAGRAM_SECRET;
+  const secret = process.env.SECRET;
 
   if (!secret) {
     return NextResponse.json({ error: 'Secret not configured' }, { status: 500 });
